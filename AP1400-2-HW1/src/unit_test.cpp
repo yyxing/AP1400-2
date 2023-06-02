@@ -147,7 +147,7 @@ TEST(HW1Test, SUM2) {
         for (size_t j{}; j < sum[i].size(); j++)
             EXPECT_NEAR(sum[i][j], matrix1[i][j]+matrix2[i][j], 0.03);
 }
-/*
+
 TEST(HW1Test, TRANSPOSE) {
     // Caution: transpose of an empty matrix is an empty matrix
     EXPECT_TRUE(algebra::transpose(Matrix{}).empty());
@@ -284,7 +284,7 @@ TEST(HW1Test, CONCATENATE2) {
     EXPECT_DOUBLE_EQ(matrix[0][3], matrix2[0][0]);
     EXPECT_DOUBLE_EQ(matrix[1][3], matrix2[1][0]);
 }
-
+/*
 TEST(HW1Test, ERO_SWAP) {
     // Caution: r1 or r2 inputs are out of range
     EXPECT_THROW(algebra::ero_swap(Matrix{{1, 2}}, 0, 1), std::logic_error);
