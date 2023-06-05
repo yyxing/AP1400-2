@@ -10,7 +10,7 @@ public:
 
     std::string get_id();
 
-    std::string get_publickey();
+    std::string get_public_key();
 
     double get_wallet();
 
