@@ -1,8 +1,7 @@
+#include "server.h"
 
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "server.h"
-#include "client.h"
 
 
 TEST(HW1Test, TEST1) {
@@ -10,7 +9,7 @@ TEST(HW1Test, TEST1) {
     auto bryan{server.add_client("bryan")};
     EXPECT_EQ(bryan->get_id(), "bryan");
 }
-/*
+
 TEST(HW1Test, TEST2) {
     Server server{};
     auto bryan{server.add_client("bryan")};
@@ -57,6 +56,16 @@ TEST(HW1Test, TEST7) {
     EXPECT_TRUE(client == nullptr);
 }
 
+
+void  show_wallets(const  Server& server)
+{
+    std::cout << std::string(20, '*') << std::endl;
+    for(const auto& client: server.get_clients())
+        std::cout << client.first->get_id() <<  " : "  << client.second << std::endl;
+    std::cout << std::string(20, '*') << std::endl;
+}
+
+
 TEST(HW1Test, TEST8) {
     Server server{};
     auto bryan{server.add_client("bryan")};
@@ -96,7 +105,7 @@ TEST(HW1Test, TEST12) {
     bool valid{bryan->transfer_money("no_one", 0.5)};
     EXPECT_FALSE(valid);
 }
-
+/*
 TEST(HW1Test, TEST13) {
     Server server{};
     auto bryan{server.add_client("bryan")};

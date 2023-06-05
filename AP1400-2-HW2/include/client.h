@@ -1,27 +1,22 @@
 #ifndef CLIENT_H
 #define CLIENT_H
-
-#include<string>
 #include "server.h"
+
+#include <string>
+#include "crypto.h"
+class Server;
 
 class Client {
 public:
-    Client(std::string id, const Server &server);
-
+    Client(std::string id, const Server& server);
     std::string get_id();
-
-    std::string get_public_key();
-
-    double get_wallet();
-
-    std::string sign(std::string txt);
-
-    bool transfer_money(std::string receiver, double value);
-
+    [[nodiscard]] std::string get_publickey() const;
+    [[nodiscard]] double get_wallet() const;
+    [[nodiscard]] std::string sign(std::string txt) const;
+    bool transfer_money(std::string receiver, double value) const;
     size_t generate_nonce();
-
 private:
-    Server const *const server;
+    Server const* const server;
     const std::string id;
     std::string public_key;
     std::string private_key;
