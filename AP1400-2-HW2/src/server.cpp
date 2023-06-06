@@ -1,10 +1,10 @@
 #include "server.h"
-#include <random>
 #include "client.h"
 #include <sstream>
-#include <vector>
 #include <stdexcept>
-#include <cstdlib>
+#include <random>
+
+std::vector<std::string> pending_trxs;
 
 Server::Server() = default;
 
@@ -46,7 +46,20 @@ std::map<std::shared_ptr<Client>, double> Server::get_clients() const {
     return this->clients;
 }
 
-bool Server::add_pending_trx(std::string trx, std::string signature) {
+bool Server::add_pending_trx(std::string trx, std::string signature) const {
+    std::string sender{}, receiver{};
+    double value;
+    parse_trx(trx, sender, receiver, value);
+    auto p_sender = get_client(sender);
+    auto p_receiver = get_client(receiver);
+    if (!p_sender || !p_receiver) {
+        return false;
+    }
+    if (crypto::verifySignature(p_sender->get_publickey(), trx, signature) &&
+        p_sender->get_wallet() >= value) {
+        pending_trxs.push_back(trx);
+        return true;
+    }
     return false;
 }
 
@@ -67,6 +80,27 @@ bool Server::parse_trx(const std::string &trx, std::string &sender, std::string 
 }
 
 size_t Server::mine() {
-    return 0;
+    std::string mempool{};
+    for (const auto &trx: pending_trxs)
+        mempool += trx;
+    while (true) {
+        for (auto &item: this->clients) {
+            size_t nonce = item.first->generate_nonce();
+            std::string hash = crypto::sha256(mempool + std::to_string(nonce));
+            if (hash.substr(0, 10).find("000") != std::string::npos) {
+                item.second += 6.25;
+                for (const auto &trx: pending_trxs) {
+                    std::string sender{}, receiver{};
+                    double value;
+                    parse_trx(trx, sender, receiver, value);
+                    this->clients[get_client(sender)] -= value;
+                    this->clients[get_client(receiver)] += value;
+                }
+                pending_trxs.clear();
+                return nonce;
+            }
+        }
+    }
 }
+
 

@@ -1,7 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 #include "server.h"
-
 #include <string>
 #include "crypto.h"
 class Server;

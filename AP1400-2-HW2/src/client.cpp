@@ -32,5 +32,7 @@ size_t Client::generate_nonce() {
 }
 
 bool Client::transfer_money(std::string receiver, double value) const {
-    return false;
+    std::string trx = this->id + "-" + receiver + "-" + std::to_string(value);
+    std::string sign = this->sign(trx);
+    return this->server->add_pending_trx(trx, sign);
 }
