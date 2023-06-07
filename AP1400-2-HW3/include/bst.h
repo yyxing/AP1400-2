@@ -7,7 +7,12 @@ class BST {
   class Node;
   BST() = default;
   BST(const BST& bst) noexcept;
-  BST(const BST&& bst) noexcept;
+  BST(BST&& bst) noexcept;
+  BST(std::initializer_list<int> list) noexcept;
+  BST& operator=(const BST& src) noexcept;
+  BST& operator=(BST&& src) noexcept;
+  BST& operator++();
+  BST operator++(int);
   Node *&get_root();
   void bfs(std::function<void(Node *&node)> func);
   size_t length();
@@ -16,9 +21,10 @@ class BST {
   Node **find_parent(int value);
   Node **find_successor(int value);
   bool delete_node(int value);
+  Node* copy_bst(BST::Node* src, BST::Node* dst);
   ~BST();
  private:
-  Node *root;
+  Node *root = nullptr;
 };
 
 class BST::Node {
@@ -38,6 +44,7 @@ bool operator>=(const BST::Node &node, int a);
 bool operator<(const BST::Node &node, int a);
 bool operator<=(const BST::Node &node, int a);
 bool operator==(const BST::Node &node, int a);
+
 
 bool operator>(int a, const BST::Node &node);
 bool operator>=(int a, const BST::Node &node);
