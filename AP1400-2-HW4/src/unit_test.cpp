@@ -149,7 +149,7 @@ TEST(HW4Test, TEST15) {
     EXPECT_EQ(ptr1.use_count(), 0);
     EXPECT_EQ(ptr1.get(), nullptr);
 }
-/*
+
 TEST(HW4Test, TEST16) {
     SharedPtr<int> ptr1{new int{10}};
     EXPECT_EQ(*ptr1, 10);
@@ -198,11 +198,13 @@ TEST(HW4Test, TEST21) {
     SharedPtr<double> ptr2{new double{5.1234}};
     ptr1 = ptr1;
     ptr2 = ptr1;
+    shared_ptr<int> pt1 = make_shared<int>(1);
+    shared_ptr<int> pt2 = make_shared<int>(1);
+    pt1 = pt2;
     EXPECT_DOUBLE_EQ(*ptr2, 1.567);
     EXPECT_EQ(ptr1.use_count(), 2);
     EXPECT_EQ(ptr2.use_count(), 2);
 }
-*/
 
 
 
